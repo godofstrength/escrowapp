@@ -11,7 +11,7 @@ const AuthService = {
         if (response.data.accessToken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
-        return response.data;
+        return response;
     },
 
     logout: () => {
@@ -23,13 +23,10 @@ const AuthService = {
             email: email,
             password: password
         })
-        if(response){
-            console.log(response.data)
-        }
         if (response.data.accessToken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
-        return response.data;
+        return response;
     },
 
     getCurrentUser: () => {
