@@ -1,13 +1,15 @@
 import React, {useState}from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react/cjs/react.development';
 import AuthService from '../../services/authService';
+import Spinner from '../Spinner';
 
 
 const Login = (props) => {
   // set state of vairables using setState hook
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // const [message, setMessage] = useState("")
 
  const onChangeEmail = (e) => {
@@ -29,7 +31,13 @@ const LoginHandler = async(e) => {
     setLoading(false);
   }
 }
-
+// set loading to false when component mounts
+useEffect(() => {
+  setLoading(false)
+})
+if(loading){
+  return <Spinner/>
+}else{
   return(
     <main>
     <div class="container">
@@ -102,5 +110,6 @@ const LoginHandler = async(e) => {
     </div>
   </main>
   );
+}
 }
 export default Login;
