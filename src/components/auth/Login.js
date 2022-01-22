@@ -3,101 +3,106 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react/cjs/react.development';
 import AuthService from '../../services/authService';
 import Spinner from '../Spinner';
-
+import { useForm } from 'react-hook-form';
+import Alert from '../Alert';
 
 const Login = (props) => {
   // set state of vairables using setState hook
+  const {register, handleSubmit, trigger, formState:{errors}} = useForm();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
-  // const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("")
 
- const onChangeEmail = (e) => {
-    setEmail(e.target.value)
- }
- const onChangePassword = e => {
-   setPassword(e.target.value)
- }
+  const changePassword = e => setPassword(e.target.value);
+  const changeEmail = e => setEmail(e.target.value);
 
 const navigate = useNavigate()
 const LoginHandler = async(e) => {
-  e.preventDefault();
   setLoading(true);
   // handle login from authService
   const response = await AuthService.login(email, password);
-  if(response.data.accessToken){
+  if(response){
+    setLoading(false);
+  if(response.data.errors){
+    setMessage(response.data.errors[0].msg);
+  }
+  if(response.data.accesstoken){
     navigate("/dashboard");
     window.location.reload(true);
-    setLoading(false);
-  }
+  }}
 }
 // set loading to false when component mounts
 useEffect(() => {
   setLoading(false)
-})
-if(loading){
-  return <Spinner/>
-}else{
+}, [])
   return(
     <main>
-    <div class="container">
+    <div className="container">
 
-      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+      <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-              <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
+              <div className="d-flex justify-content-center py-4">
+                <a href="index.html" className="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt=""></img>
-                  <span class="d-none d-lg-block">{process.env.REACT_APP_WEBSITE_NAME}</span>
+                  <span className="d-none d-lg-block">{process.env.REACT_APP_WEBSITE_NAME}</span>
                 </a>
               </div>
 
-              <div class="card mb-3">
+              <div className="card mb-3">
 
-                <div class="card-body">
+                <div className="card-body">
 
-                  <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                    <p class="text-center small">Enter your email & password to login</p>
+                  <div className="pt-4 pb-2">
+                    <h5 className="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                    <p className="text-center small">Enter your email & password to login</p>
                   </div>
+                  {message ? <Alert alertType='alert-danger' alertText={message}/>: ''}
+                  <form className="row g-3 needs-validation" noValidate onSubmit={handleSubmit(LoginHandler)}>
 
-                  <form class="row g-3 needs-validation" novalidate onSubmit={LoginHandler}>
-
-                    <div class="col-12">
-                      <label for="yourEmail" class="form-label">Your Email</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" onChange={onChangeEmail} value={email} name="email" class="form-control" id="yourEmail" required></input>
-                        <div class="invalid-feedback">Please enter your Email</div>
-                      </div>
+                    <div className="col-12">
+                      <label htmlFor="yourEmail" className="form-label">Email Address</label>
+                      <input type="email" name="email" onChange={changeEmail} value={email} className="form-control" id="yourEmail"
+                      {...register('email', {required: 'Email is required'})}
+                      onKeyUp={() => {
+                        trigger('email')
+                      }}
+                      onChange={changeEmail}
+                      ></input>
+                      {errors.email && (<small className='text-danger'>{errors.email.message}</small>)}
                     </div>
 
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="passwword" onChange={onChangePassword} value={password} class="form-control" id="yourPassword" required></input>
-                      <div class="invalid-feedback">Please enter your password!</div>
+
+                    <div className="col-12">
+                      <label htmlFor="yourPassword" className="form-label">Password</label>
+                      <input type="password" name="passwword" value={password} className="form-control" id="yourPassword"
+                      {...register('password', {required: 'Password is required'})}
+                      onKeyUp={() => {
+                        trigger('password')
+                      }}
+                      onChange={changePassword}
+                      ></input>
+                      {errors.password && (<small className='text-danger'>{errors.password.message}</small>)}
                     </div>
 
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe"></input>
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                      </div>
+                    <div className="col-12">
+                    <p className="small mb-0"><Link to="/register">Forgot Password?</Link></p>
                     </div>
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                    <div className="col-12">
+                      <button className="btn btn-primary w-100" type="submit">{loading ? <Spinner height='40px' width='40px' top='0%' left='40%'/>: 'Login'}</button>
                     </div>
-                    <div class="col-12">
-                      <p class="small mb-0">Don't have account? <Link to="/register">Create an account</Link></p>
+                    <div className="col-12">
+                      <p className="small mb-0">Don't have account? <Link to="/register">Create an account</Link></p>
                     </div>
                   </form>
 
                 </div>
               </div>
 
-              <div class="credits">
+              <div className="credits">
                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
               </div>
 
@@ -110,6 +115,5 @@ if(loading){
     </div>
   </main>
   );
-}
 }
 export default Login;

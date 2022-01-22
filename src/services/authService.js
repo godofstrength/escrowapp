@@ -8,7 +8,7 @@ const AuthService = {
             email: email,
             password: password
         });
-        if (response.data.accessToken) {
+        if (response.data.accesstoken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
         return response;
@@ -23,7 +23,7 @@ const AuthService = {
             email: email,
             password: password
         })
-        if (response.data.accessToken) {
+        if (response.data.accesstoken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
         return response;
