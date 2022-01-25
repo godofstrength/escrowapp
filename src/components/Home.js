@@ -8,6 +8,7 @@ export class Home extends Component {
                 <h1>Welcome to escrowApp</h1>
                 <Link to='/register'>Register</Link>
                 <Link to="/login">Login</Link>
+                <Link to="/dashboard">Dashboard</Link>
             </div>
         )
     }
