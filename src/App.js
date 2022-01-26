@@ -6,18 +6,23 @@ import Dashboard from './components/dashboard/Dashboard';
 import Home from './components/Home';
 import PrivateRoute from './services/PrivateRoute';
 import Navbar from './components/Navbar';
+import Layout from './components/Layout';
 
 function App() {
   return (
     <Router>
     <div className="App">
-      <Navbar></Navbar>
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path='/dashboard' element={<Layout/>}>
+          <Route index element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
+        </Route>
+        <Route path="/" element={<>
+        <Navbar/>
+        <Home/>
+        </>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
-      </Routes>
+        </Routes>
      
     </div>
     </Router>
