@@ -3,9 +3,9 @@ import Sidebar from './Sidebar'
 import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
+const Layout = (props) => {
   return <div>
-      <Navbar/>
+      <Navbar props= {props}/>
       <Sidebar/>
       <Outlet/>
   </div>;

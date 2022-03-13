@@ -8,7 +8,7 @@ const AuthService = {
             email: email,
             password: password
         });
-        if (response.data.accesstoken) {
+        if (response.data.user.accessToken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
         return response;
@@ -31,6 +31,14 @@ const AuthService = {
 
     getCurrentUser: () => {
         return JSON.parse(localStorage.getItem('user'));
+    },
+    isAuth: () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if(user && user.accessToken){
+            return { authorization: 'Bearer '+user.accessToken}
+        }else{
+            return false;
+        }
     }
 }
 

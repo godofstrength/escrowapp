@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef, Fragment} from 'react';
+import { Link } from 'react-router-dom';
 import Spinner from '../Spinner';
 import AuthService from '../../services/authService';
 import { Footer } from '../Footer';
@@ -6,10 +7,8 @@ import { Footer } from '../Footer';
 const Dashboard = () => {
  const [loading, setLoading] = useState(true);
  const [redirect, setRedirect] = useState(null);
- const [currentUser, setCurrentUser] = useState({username: ''});
 
  useEffect(() => {
-     setCurrentUser(AuthService.getCurrentUser())
      setLoading(false);
  }, [])
  if(loading){
@@ -84,7 +83,7 @@ const Dashboard = () => {
                           <h6>Filter</h6>
                         </li>
     
-                        <li><a className="dropdown-item" href="/">Today</a></li>
+                        <li><Link className="dropdown-item" to="/users">Users</Link></li>
                         <li><a className="dropdown-item" href="/">This Month</a></li>
                         <li><a className="dropdown-item" href="/">This Year</a></li>
                       </ul>

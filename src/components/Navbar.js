@@ -1,6 +1,17 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
+import { connect, useDispatch } from 'react-redux';
+import AuthService from '../services/authService';
+import { getCurrentUser } from '../actions/UserActions';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
+  const appState = useSelector((state) => state)
+  const dispatch = useDispatch();
+let currentUser = appState.currentUser;
+  // useEffect(()=> {
+  //   dispatch
+  // }, []);
   return (
       <Fragment>
     <header id="header" className="header fixed-top d-flex align-items-center">
@@ -182,7 +193,7 @@ const Navbar = () => {
   
             <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle"></img>
-              <span className="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+              <span className="d-none d-md-block dropdown-toggle ps-2">{currentUser.user.email}</span>
             </a>
             {/* <!-- End Profile Iamge Icon --> */}
   
@@ -240,3 +251,4 @@ const Navbar = () => {
 }
 
 export default Navbar;
+

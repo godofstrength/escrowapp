@@ -5,6 +5,8 @@ import AuthService from '../../services/authService';
 import Spinner from '../Spinner';
 import { useForm } from 'react-hook-form';
 import Alert from '../Alert';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from '../../actions/UserActions';
 
 const Login = (props) => {
   // set state of vairables using setState hook
@@ -17,19 +19,22 @@ const Login = (props) => {
   const changePassword = e => setPassword(e.target.value);
   const changeEmail = e => setEmail(e.target.value);
 
-const navigate = useNavigate()
+const navigate = useNavigate();
+const dispatch = useDispatch();
 const LoginHandler = async(e) => {
   setLoading(true);
   // handle login from authService
   const response = await AuthService.login(email, password);
   if(response){
+    console.log(response)
     setLoading(false);
   if(response.data.errors){
     setMessage(response.data.errors[0].msg);
   }
-  if(response.data.accesstoken){
+  if(response.data.user.accessToken){
+    const currentUser = await AuthService.getCurrentUser();
+    dispatch(setCurrentUser(currentUser))
     navigate("/dashboard");
-    window.location.reload(true);
   }}
 }
 // set loading to false when component mounts
