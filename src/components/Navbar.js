@@ -5,10 +5,9 @@ import { getCurrentUser } from '../actions/UserActions';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-const Navbar = () => {
-  const appState = useSelector((state) => state)
+const Navbar = (props) => {
+  let appState = useSelector((state) => state.users)
   const dispatch = useDispatch();
-let currentUser = appState.currentUser;
   // useEffect(()=> {
   //   dispatch
   // }, []);
@@ -193,13 +192,13 @@ let currentUser = appState.currentUser;
   
             <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle"></img>
-              <span className="d-none d-md-block dropdown-toggle ps-2">{currentUser.user.email}</span>
+              <span className="d-none d-md-block dropdown-toggle ps-2">Hi</span>
             </a>
             {/* <!-- End Profile Iamge Icon --> */}
   
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>Kevin Anderson</h6>
+                <h6>{appState.currentUser.user.email}</h6>
                 <span>Web Designer</span>
               </li>
               <li>
@@ -230,7 +229,7 @@ let currentUser = appState.currentUser;
               </li>
   
               <li>
-                <a className="dropdown-item d-flex align-items-center" href="#">
+                <a className="dropdown-item d-flex align-items-center" href="">
                   <i className="bi bi-box-arrow-right"></i>
                   <span>Sign Out</span>
                 </a>

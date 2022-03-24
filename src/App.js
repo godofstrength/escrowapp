@@ -13,10 +13,11 @@ import { setCurrentUser } from './actions/UserActions';
 import {SkipAuth, RequireAuth} from  './components/auth/AuthController'
 
 function App(props) {
+  // props is accessed normally here
+  // console.log(props.isAuthenticated)
   let dispatch = useDispatch();
   let currentUser = AuthService.getCurrentUser()
   useEffect(() => {
-    AuthService.isAuth();
     dispatch(setCurrentUser(currentUser));
   }, []);
  
@@ -24,8 +25,8 @@ function App(props) {
     <Router>
     <div className="App">
       <Routes>
-        <Route props={props} path='/dashboard' element={<Layout/>}>
-          <Route index element={<RequireAuth props={props}><Dashboard/></RequireAuth>}/>
+        <Route path='/dashboard' element={<Layout props={props}/>}>
+          <Route index element={<RequireAuth props={props}><Dashboard props={props}/></RequireAuth>}/>
         </Route>
         <Route path="/" element={<>
         {/* <Navbar/> */}
@@ -40,8 +41,7 @@ function App(props) {
 }
 
 const mapStateToProps = store => ({
-  user: store.users,
-  loading: store.loading
+  ...store.users
 })
 
 export default connect(mapStateToProps)(App);

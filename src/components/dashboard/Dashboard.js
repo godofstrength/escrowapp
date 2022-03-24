@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import Spinner from '../Spinner';
 import AuthService from '../../services/authService';
 import { Footer } from '../Footer';
+import { useSelector } from 'react-redux';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
  const [loading, setLoading] = useState(true);
- const [redirect, setRedirect] = useState(null);
+//  const [redirect, setRedirect] = useState(null);
+let appState = useSelector(state => state.users)
+console.log(appState);
 
  useEffect(() => {
      setLoading(false);
